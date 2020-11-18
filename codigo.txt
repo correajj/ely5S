@@ -1,0 +1,214 @@
+import 'package:flutter/material.dart';
+
+void main() {runApp(MaterialApp(
+	title: 'Navegação Básica',
+	 theme: ThemeData(
+	   primarySwatch: Colors.grey
+         ),
+         home: Login(),
+      )
+    );
+}
+
+
+class Login extends StatefulWidget {
+  @override
+  FormularioLogin createState() {
+    return FormularioLogin();
+  }
+}
+
+class FormularioLogin extends State<Login> {
+  final formKey = GlobalKey<FormState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  String email = "";
+  String senha = "";
+  var contexto;
+  
+  @override
+  Widget build(BuildContext context) {
+    contexto = context;
+    return MaterialApp(
+        home: Scaffold(
+            key: scaffoldKey,
+            body: Center(child:  
+            SingleChildScrollView(
+                child: Container(
+              margin: new EdgeInsets.all(15.0),
+              child: Form(
+                  key: formKey, 
+                  child: FormularioLoginUI(this)),
+            )))));
+  }
+}
+
+Widget FormularioLoginUI(var meuFormulario) {
+
+
+  return Column(children: [
+    Text("Monitoramento de Patrocínios"),
+    TextFormField(
+        decoration: InputDecoration(labelText: "E-mail:"),
+        onSaved: (String val) {
+          meuFormulario.setState(() {
+            meuFormulario.email = val;
+          });
+        }),
+    TextFormField(
+        decoration: InputDecoration(labelText: "Senha:"),
+        onSaved: (String val) {
+           meuFormulario.setState(() {
+            meuFormulario.senha = val;
+          });
+        }),
+    RaisedButton(
+        child: Text("Entrar"),
+        onPressed: () {
+          meuFormulario.formKey.currentState.save();
+
+          
+          
+          if (meuFormulario.email == "adm" && 
+             meuFormulario.senha == "123a") {
+            
+            Navigator.push(
+              meuFormulario.contexto,
+MaterialPageRoute(builder: (context) => Consulta())); 
+            
+            
+          } else {
+              meuFormulario.scaffoldKey.currentState.showSnackBar(SnackBar(
+              content: Text(
+                  "Usuário ou senha inválidos")));
+          }
+           
+
+        }
+      )
+  ]);
+}
+
+
+
+class Consulta extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Patrocínios'),
+      
+      ),
+      body:
+        Column(
+           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+           children:[
+             Expanded(
+               flex: 5,
+               child: 
+                ListView(children: [
+                  ListTile(
+                    leading: const Icon(Icons.arrow_back_ios ),
+                    title: const Text("Heineken"),
+                    subtitle: const Text("Heineken International é uma cervejaria holandesa, fundada em 1863 por Wandscheer Heineken na cidade de Amsterdã."), 
+                    onTap: () => Consulta(), 
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.arrow_back_ios ),
+                    title: const Text("Nike"),
+                    subtitle: const Text("Nike, Inc. é uma empresa estadunidense de calçados, roupas, e acessórios fundada em 1972 por Bill Bowerman e Phillip Knight. "), 
+                    onTap: () => Consulta(), 
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.arrow_back_ios ),
+                    title: const Text("Vivo"),
+                    subtitle: const Text("A Vivo é a marca comercial da Telefônica Brasil."), 
+                    onTap: () => Consulta(), 
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.arrow_back_ios ),
+                    title: const Text("Monster Energy"),
+                    subtitle: const Text("Monster Energy é uma marca norte-americana de bebida energética, lançada pela Hansen Natural, em 2002 e produzida pela Monster Beverage Co."), 
+                    onTap: () => Consulta(), 
+                  ),
+                 
+                  
+                ],
+              ),
+              ),
+              Expanded(child: 
+               Align(
+        alignment: Alignment(0.80,0.90),
+        child: FloatingActionButton(
+        onPressed: () {
+            Navigator.push(
+              context,
+            MaterialPageRoute(builder: (context) => SegundaRota()),
+            );
+          }, 
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ),      
+      ),
+              )
+           ]
+          )
+    
+    );   
+  }
+
+  
+}
+
+Widget Lista(){
+    return ListView(
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.map),
+              title: Text('Mapa'),
+            ),
+            ListTile(
+              leading: Icon(Icons.photo_album),
+              title: Text('Álbum'),
+            ),
+            ListTile(
+              leading: Icon(Icons.phone),
+              title: Text('Fone'),
+            ),
+          ],
+        );
+  }
+
+
+
+class SegundaRota extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Cadastro"),),
+      body: Column(
+        children: [
+        Text("Cadastre o novo patrocinador"),
+      TextFormField(
+        decoration: InputDecoration(labelText: "Nome:"),
+        ),
+      TextFormField(
+        decoration: InputDecoration(labelText: "Valor do patrocínio:"),
+        ),
+      TextFormField(
+        decoration: InputDecoration(labelText: "Contratante:"),
+        ),
+      TextFormField(
+        decoration: InputDecoration(labelText: "Duração:"),
+        ),
+        Center(
+        child: RaisedButton(
+          onPressed: () { 
+            Navigator.pop(context);
+          },
+          child: Text('Cadastrar!'),
+        ),
+      ),
+      ]
+    )
+    );
+}
+}
